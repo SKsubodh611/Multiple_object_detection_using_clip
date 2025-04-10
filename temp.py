@@ -2,7 +2,7 @@ from imports import *
 
 # Load CLIP model
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-B/32", device=device)
+model, preprocess = clip.load("ViT-B/16", device=device)
 
 # Define objects to detect
 object_descriptions = ["a person", "a dog", "a cat","a cap", "a car", "a tree", "a chair", "a football", "a cup", "a laptop", "a phone"]
@@ -33,7 +33,7 @@ while True:
     max_proposals = min(len(rects), 20)  # Reduce number of regions to process
 
     for (x, y, w, h) in rects[:max_proposals]:
-        if w < 50 or h < 50:  # Ignore very small boxes
+        if w < 56 or h < 50 or w/h>2.5 or h/w>2.5:  # Ignore very small boxes
             continue
 
         roi = frame[y:y+h, x:x+w]
